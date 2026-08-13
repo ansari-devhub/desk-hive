@@ -1,0 +1,26 @@
+[project]
+name = "deskhive"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "africastalking>=2.0.3",
+    "celery>=5.6.3",
+    "django>=6.0.7",
+    "django-extensions>=4.1",
+    "django-phonenumber-field[phonenumbers]>=8.5.0",
+    "django-tenants>=3.10.2",
+    "djangorestframework>=3.18.0",
+    "psycopg2-binary>=2.9.12",
+    "python-decouple>=3.8",
+    "redis>=8.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-django>=4.14.0",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["tests.py", "tests_*.py", "*_tests.py"]
