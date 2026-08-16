@@ -210,6 +210,41 @@ data or fail to be visible where expected.
 **Status**: open risk — a good candidate for a custom Django system check
 in a future iteration.
 
+### 6. Task broker (Redis) unavailability during ticket creation
+**Risk**: `send_ticket_sms.delay(...)` requires a live connection to the
+Celery broker (Redis) to enqueue the task. If Redis is down, `.delay()`
+raises a connection error immediately. Left unhandled, this exception
+propagates out of the view, and the client receives a `500` — even though
+the `Ticket` itself was already successfully written to the database
+moments earlier. A client retrying after a `500` risks creating a
+duplicate ticket for an operation that, in fact, already succeeded.
+**Mitigation**: `TicketViewSet.create()` wraps the `.delay()` call in its
+own `try/except`, independent of ticket creation. A broker failure is
+logged and surfaced to the client as a non-fatal `warning` field in an
+otherwise successful `201 Created` response, rather than failing the
+whole request or silently swallowing the problem.
+**Status**: mitigated. Not yet mitigated: no automatic retry or
+dead-letter mechanism if the broker is down at creation time — the SMS for
+that specific ticket is simply never queued, with no later recovery path.
+
+### 7. Django's development server cannot absorb concurrent connection bursts
+**Risk**: observed directly via k6 load testing (20 concurrent virtual
+users against `runserver`) — a burst of simultaneous initial connections
+produced `connection actively refused` errors in the first few seconds of
+the test, before the server stabilized and handled the remainder of the
+run normally. This is not a defect in tenant isolation or authentication
+logic: every failure was a connection-level rejection, not a wrong
+response body, wrong-tenant data, or an auth bypass — isolation and JWT
+auth held correctly for every request that was actually accepted.
+**Mitigation**: none needed at the application level; this is expected,
+documented behavior of `runserver`, which Django explicitly does not
+consider production-ready or built for concurrency.
+**Status**: not a defect, but a hard requirement for later phases —
+production (and any serious load testing) must run behind a real
+WSGI/ASGI server (e.g. gunicorn, uvicorn), never `runserver`. Load-test
+results gathered against `runserver` should not be trusted as
+representative of production capacity.
+
 ---
 
 ## Architectural Decision Records

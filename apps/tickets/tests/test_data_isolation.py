@@ -1,7 +1,7 @@
 import pytest
 from django_tenants.utils import schema_context
 from apps.tenants.models import Client
-from .models import Customer, Ticket
+from apps.tickets.models import Customer, Ticket
 
 
 @pytest.fixture

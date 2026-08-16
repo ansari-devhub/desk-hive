@@ -10,6 +10,7 @@ dependencies = [
     "django-phonenumber-field[phonenumbers]>=8.5.0",
     "django-tenants>=3.10.2",
     "djangorestframework>=3.18.0",
+    "djangorestframework-simplejwt>=5.5.1",
     "psycopg2-binary>=2.9.12",
     "python-decouple>=3.8",
     "redis>=8.1.0",
@@ -23,4 +24,4 @@ dev = [
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
-python_files = ["tests.py", "tests_*.py", "*_tests.py"]
+python_files = ["tests.py", "test_*.py", "*_test.py"]

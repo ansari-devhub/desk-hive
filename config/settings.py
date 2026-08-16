@@ -26,7 +26,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.localhost', 'localhost', '127.0.0.1', 'testserver']
 
 
 # Application definition
@@ -43,8 +43,10 @@ ALLOWED_HOSTS = []
 SHARED_APPS =[
     'django_tenants',
     'apps.tenants',
+    'apps.accounts',
     'phonenumber_field',
     'rest_framework',
+    'rest_framework_simplejwt',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -136,6 +138,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+# Django REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'apps.accounts.authentication.TenantAwareJWTAuthentication',
+    ),
+}
 
 
 # Internationalization
