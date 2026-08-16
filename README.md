@@ -97,6 +97,7 @@ see [ADR-0002](docs/adr/0002-async-sms-delivery-via-celery.md).
 | SMS | Africa's Talking (sandbox) |
 | Testing | pytest, pytest-django |
 | Package management | uv |
+| Load Testing | k6 |
 
 ---
 
@@ -254,6 +255,8 @@ representative of production capacity.
 | [0001](docs/adr/0001-schema-based-multi-tenancy.md) | Schema-based multi-tenancy over shared-schema row-level isolation |
 | [0002](docs/adr/0002-async-sms-delivery-via-celery.md) | Asynchronous SMS delivery via Celery, not inline API calls |
 | [0003](docs/adr/0003-customer-model-standalone-from-user.md) | `Customer` as a standalone model, not tied to Django's `User` |
+| [0004](docs/adr/0004-shared-user-model-tenant-aware-jwt.md) | Shared `User` model with tenant-aware JWT authentication |
+| [0005](docs/adr/0005-graceful-degradation-sms-dispatch-failure.md) | Graceful degradation when SMS task dispatch fails |
 
 ---
 
