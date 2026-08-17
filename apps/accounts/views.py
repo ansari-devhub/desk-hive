@@ -1,0 +1,6 @@
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import TenantScopedTokenObtainPairSerializer
+
+
+class TenantScopedTokenObtainPairView(TokenObtainPairView):
+    serializer_class = TenantScopedTokenObtainPairSerializer

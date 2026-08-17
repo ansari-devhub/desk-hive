@@ -1,4 +1,4 @@
-# apps/accounts/authentication.py  (new small app, or put in apps/tickets/ for now)
+from django.db import connection
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from apps.tickets.models import Agent
@@ -11,6 +11,12 @@ class TenantAwareJWTAuthentication(JWTAuthentication):
             return None
 
         user, validated_token = result
+
+        token_schema = validated_token.get('schema_name')
+        if token_schema != connection.schema_name:
+            raise AuthenticationFailed(
+                "This token is not valid for the current tenant."
+            )
 
         if not Agent.objects.filter(user=user).exists():
             raise AuthenticationFailed(

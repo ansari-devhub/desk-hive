@@ -13,9 +13,14 @@ class TimeStampedModel(models.Model):
     
     
 class Agent(models.Model):
+    class Role(models.TextChoices):
+        OWNER = 'OWNER', 'Owner'
+        AGENT = 'AGENT', 'Agent'
+        READ_ONLY = 'READ_ONLY', 'Read-only'
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='agent_profile')
-    role = models.CharField(max_length=100)
-    
+    role = models.CharField(max_length=10, choices=Role.choices, default=Role.AGENT)
+
     def __str__(self):
         return f'{self.user.username}: {self.role}'
     

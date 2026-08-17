@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.tickets.models import Ticket
+from apps.tickets.permissions import TicketPermission
 from apps.tickets.serializers import TicketSerializer
 from apps.tickets.tasks import send_ticket_sms
 
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class TicketViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, TicketPermission]
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
