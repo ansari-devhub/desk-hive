@@ -48,6 +48,7 @@ class Ticket(TimeStampedModel):
         choices=TicketStatus,
         default=TicketStatus.OPEN
     )
+    custom_fields = models.JSONField(default=dict, blank=True)
     
     def __str__(self):
         return f'{self.subject}'
