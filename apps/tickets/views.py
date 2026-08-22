@@ -2,7 +2,7 @@ import logging
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework.exceptions import PermissionDenied
 from apps.tickets.models import Ticket
 from apps.tickets.permissions import TicketPermission
 from apps.tickets.serializers import TicketSerializer
@@ -17,6 +17,11 @@ class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
 
     def create(self, request, *args, **kwargs):
+        subscription = request.tenant.subscription
+        if subscription.is_over_ticket_limit():
+            raise PermissionDenied(
+                f"Monthly ticket limit ({subscription.plan.max_tickets_per_month}) reached for the {subscription.plan.name} plan."
+            )
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         ticket = serializer.save()

@@ -42,7 +42,7 @@ class Ticket(TimeStampedModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='customer_tickets')
     agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, related_name='agent_tickets', null=True, blank=True)
     subject = models.CharField(max_length=200)    
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     status = models.CharField(
         max_length=9,
         choices=TicketStatus,

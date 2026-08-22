@@ -195,6 +195,7 @@ dependencies = [
     { name = "djangorestframework" },
     { name = "djangorestframework-simplejwt" },
     { name = "psycopg2-binary" },
+    { name = "python-dateutil" },
     { name = "python-decouple" },
     { name = "redis" },
 ]
@@ -216,6 +217,7 @@ requires-dist = [
     { name = "djangorestframework", specifier = ">=3.18.0" },
     { name = "djangorestframework-simplejwt", specifier = ">=5.5.1" },
     { name = "psycopg2-binary", specifier = ">=2.9.12" },
+    { name = "python-dateutil", specifier = ">=2.9.0.post0" },
     { name = "python-decouple", specifier = ">=3.8" },
     { name = "redis", specifier = ">=8.1.0" },
 ]
